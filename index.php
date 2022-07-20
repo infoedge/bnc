@@ -15,11 +15,14 @@ include 'models/myFieldTypes.php';
 session_start();
 $trxOptn=0;
 $domain="";
+trxInResult=array();
+$trxDetails = array();
 if (isset($_POST['submitBtn'])) {
     $thedomain = $_POST['domain'];
     $_SESSION['thedomain']= $thedomain;
     $_SESSION['cycleCnt'] = 0;
     $trxOptn = $_POST['trxOptn'];
+    $curling = new mydomain();
 
     switch($trxOptn){
         case 1:
@@ -41,6 +44,14 @@ if (isset($_POST['submitBtn'])) {
                 header('location: showdetails.php');
             }
             break;
+        case 7:
+                $_SESSION['trxtype'] = $trxOptn;
+                $eppcode = $_POST['eppcode'];
+                if($thedomain && $eppcode){
+                    //tranfer In
+                    include 'models/trxin.php';
+                }
+                break;
     }
 }
 ?>
@@ -91,17 +102,23 @@ if (isset($_POST['submitBtn'])) {
     </div>
     <div class='row authArea'>
     <span id='tfr_Area'> 
-    <span id="auth_code">
-     <p ><strong>To transfer a domain name in, there are a few requirements to be met namely:-</strong>
-         <ul><li>The domain name must have been registered within the last 60 days.</li>
-            <li>The domain name must NOT have been transferred within the last 60 days.</li>
-            <li>The domain name must be unlocked at the current registrar.</li>
-            <li>You will need to get the domain name's transfer authorization/EPP code from the current registrar.</li>
-            </ul>
-            Enter Authorization/EPP Code <input type="text" id="eppcode" name="eppcode" title="EPP Code">
-        </p></span>
-</span>
-</div>
+        <span id="auth_code">
+        <p ><strong>To transfer a domain name in, there are a few requirements to be met namely:-</strong>
+            <ul><li>The domain name must have been registered within the last 60 days.</li>
+                <li>The domain name must NOT have been transferred within the last 60 days.</li>
+                <li>The domain name must be unlocked at the current registrar.</li>
+                <li>You will need to get the domain name's transfer authorization/EPP code from the current registrar.</li>
+                </ul>
+                Enter Authorization/EPP Code <input type="text" id="eppcode" name="eppcode" title="EPP Code">
+            </p>
+        </span>
+    </span>
+    </div>
+    <?php
+        if($trxOptn==7){
+
+        }
+    ?>
         </p>
 </div>
 </form>

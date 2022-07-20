@@ -76,8 +76,9 @@ include 'mydomain.php';
     print_r($result7);
 
     $curling8 = new mydomain();
-    $data = array("years"=>2);
-    $result8 = $curling8->doCurl($data ,'getPricing','infoedgenetwork.com');
+    $data = array(/*"years"=>2*/);
+    $mydomain = 'doubleplay.com';
+    $result8 = $curling8->doCurl($data ,'getPricing',$mydomain);
     echo("getPricing <br>");
     print_r($result8);
     $curling8->resStr=json_decode($result8,true);
