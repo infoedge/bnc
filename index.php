@@ -15,7 +15,7 @@ include 'models/myFieldTypes.php';
 session_start();
 $trxOptn=0;
 $domain="";
-trxInResult=array();
+$trxInResult=array();
 $trxDetails = array();
 if (isset($_POST['submitBtn'])) {
     $thedomain = $_POST['domain'];
