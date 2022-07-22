@@ -12,20 +12,21 @@ include 'models/myFieldTypes.php';
 
 session_start();
 $chkDomain=true;
-$trxOut=$chgContacts=$renDomain=0;
+$trxOut=$chgContacts=$renDomain=$domainNotFound=0;
 $domain = $_SESSION["thedomain"];
 $curling = new mydomain();
 // $contacts=array();
 
 if(isset($_POST['transferOutBtn'])){//transfer out
         $trxOut=1;
-            $domains= array();
-            //unlock first
-            $data = $domain;
-            $result3 = $curling->doCurl($domains,'unlock',$data);
-            //End Unlock First
-            $result2= $curling->doCurl($domains,'getAuthCode',$data);
-            $curling->resStr = json_decode($result2,true);
+        $domains= array();
+        //unlock first
+        $data = $domain;
+        $result3 = $curling->doCurl($domains,'unlock',$data);
+        //End Unlock First
+        $result2= $curling->doCurl($domains,'getAuthCode',$data);
+        $curling->resStr = json_decode($result2,true);
+        
 }elseif(isset($_POST['chgContacts'])){
     $chgContacts=1;
     $conttxt = $_POST['conttxt'];
@@ -81,18 +82,24 @@ if(isset($_POST['transferOutBtn'])){//transfer out
     //echo("Get Domain \n");
     $curling->resStr = json_decode($result,true);
     ////////////////////////////////////////////////
-    $contacts= $curling->resStr['contacts'];
-    ////////////////////
-    $domDetArr=array("contacts"=>
-            array(
-                "registrant"=>array(),
-                "admin"=>array(),
-                "tech"=>array(),
-                "billing"=>array()
-            )
-        // "nameservers"=>array()
-    );
-    $nameSvrArr=array();
+    if(!in_array('contacts',$curling->resStr)){
+        $domainNotFound=1;
+        $msg = $curling->resStr['message'];
+    }else{
+        
+        $contacts= $curling->resStr['contacts'];
+        ////////////////////
+        $domDetArr=array("contacts"=>
+                array(
+                    "registrant"=>array(),
+                    "admin"=>array(),
+                    "tech"=>array(),
+                    "billing"=>array()
+                )
+            // "nameservers"=>array()
+        );
+        $nameSvrArr=array();    
+    }
 }
 ?>
         <meta charset="utf-8">
