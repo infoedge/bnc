@@ -1,0 +1,21 @@
+<?php
+namespace common\components;
+
+use Yii;
+use yii\base\Component;
+
+class Apparrays extends Component
+{
+    public  $domRegTypesArr= array("registrant","admin","tech", "billing");
+
+    public  $domFieldNamesArr= array("First Name: ","Last Name: ","Address 1: ","City: ","State: ","Country: ","Phone: ","E-mail: "); 
+
+    public  $domFieldsArr= array('firstName','lastName','address1','city','state','country','phone','email');
+    
+
+    public  $domainDetTypesArr = array('domainName','createDate','expireDate','renewalPrice','autorenewEnabled','locked','privacyEnabled','nameservers');
+    
+    public  $domDetTypNamesArr= array('Domain Name: ','Create Date: ','Expiry Date: ','Renewal Price: $','Auto Renewal Enabled: ','Locked: ','Privacy Enabled: ','Name Servers: ');
+    
+}
+?>
