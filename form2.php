@@ -191,7 +191,7 @@ session_start();
     }
 ?>
 <link rel="stylesheet" href="css/bootstrap.min.css"/>
-<link rel="stylesheet" href="css/style.css" />
+<link rel="stylesheet" href="css/local.css" />
 <script src="js/jquery-3.6.0.min.js"></script>
 <Script src="js/animate.js"></script>
 <Script src="js/domDetails.js"></script>

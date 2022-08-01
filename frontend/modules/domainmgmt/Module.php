@@ -2,6 +2,9 @@
 
 namespace app\modules\domainmgmt;
 
+use Yii;
+use frontend\modules\domainmgmt\assets\DomainAsset;
+
 /**
  * domainmgmt module definition class
  */
@@ -17,6 +20,7 @@ class Module extends \yii\base\Module
      */
     public function init()
     {
+        //DomainAsset::register(Yii::$app->view);
         parent::init();
 
         // custom initialization code goes here

@@ -1,6 +1,6 @@
 <?php
 
-namespace frontend\assets;
+namespace frontend\modules\domainmgmt\assets;
 
 use yii\web\AssetBundle;
 
@@ -13,7 +13,6 @@ class AppAsset extends AssetBundle
     public $baseUrl = '@web';
     public $css = [
         'css/site.css',
-        'css/local.css',
     ];
     public $js = [
         'js/animate.js',

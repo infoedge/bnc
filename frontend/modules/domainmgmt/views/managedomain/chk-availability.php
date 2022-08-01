@@ -1,34 +1,21 @@
 <?php
-/* @var $this yii\web\View */
-$this->title='Check Availability';
-$data = Yii::$app->session['domain'];
-$chkavailability=0;
-$curling= Yii::$app->mydomain;
-$validity=Yii::$app->validation;
-//$curling = new mydomain();
-//        $data = $_POST["domain"];
-        //$domains = explode(",",$data,50);
-        
-         $domains= $validity->checkErrors($data,'url');
-        // for($cnt=0;$cnt<count($domains);$i++){
-        //     $url = trim(htmlspecialchars($domains[$cnt]));
-	    //     $url = filter_var($url, FILTER_VALIDATE_URL);
+use yii\helpers\Html;
+use yii\widgets\ActiveForm;
 
-        //     if ($url === false) {
-        //         $curling->myerr[$cnt]='Invalid URL';
-        //     }
-        // }
-        $result= $curling->doCurl($domains,'checkAvailability');
-        $curling->resStr = json_decode($result, true);  
-        $cnt = count($curling->resStr['results']);
-        if($cnt){
-            $chkavailability=1;
-        }
+/* @var $this yii\web\View */
+$this->title='Check Domain Availability';
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Domain Management'), 'url' => ['/domainmgmt/managedomain/index']];
+$this->params['breadcrumbs'][]= ['label' => Yii::t('app', $this->title)];
 ?>
-<h1>Domain Availability</h1>
+<h1><?= html::encode($this->title) ?></h1>
 
 <div>
-    <?php if($chkavailability){
-        Yii::$app->display->availableList($curling->resStr['results']);
-    }?>
+    <?php $form = ActiveForm::begin(['id'=>'check-availability-form']); ?>
+        
+        <?= $this->render('_showavailabledomains', [
+            'resStr'=>$resStr,
+            'appArr'=>$appArr,
+            'regcnt'=>$regcnt,
+        ]) ?>
+    <?php ActiveForm::end(); ?>
 </div>
