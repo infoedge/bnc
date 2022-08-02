@@ -14,8 +14,8 @@ for($domDetCnt=0;$domDetCnt<count($domainDetTypesArr);$domDetCnt++){
         echo("<strong>Name Servers </strong><br>");
         for($m=0;$m<count($resStr['nameservers']);$m++){
             echo("<div class=\"displayItem\"><span class='lft'>&nbsp;&nbsp;".($m +1)
-            ."&nbsp;<input type=\"text\" name=\"nsvrtxt[]\" id=\"nsvrtxt[$m]\"  value =\"".$resStr['nameservers'][$m]."\" disabled=\"disabled\" />"
-            ."<input type=\"hidden\" name=\"nsvrtxt-s[]\" id=\"nsvrtxt-s[$m]\"  value =\"".$resStr['nameservers'][$m]."\" disabled=\"disabled\" />"
+            ."&nbsp;<input type=\"text\" name=\"nsvrtxt[]\" id=\"nsvrtxt[$m]\"  value =\"".$resStr['nameservers'][$m]."\" disabled=\"disabled\"  size=\"15\" />"
+            ."<input type=\"hidden\" name=\"nsvrtxt-s[]\" id=\"nsvrtxt-s[$m]\"  value =\"".$resStr['nameservers'][$m]."\" disabled=\"disabled\" size=\"15\"/>"
             ."</span>"
             ."<span class=\"rgt\"><input type=\"checkbox\" name=\"nsvrbox[$m]\" id=\"nsvrbox[$m]\" value=\"$m\"  />"
             ."</span>"

@@ -82,12 +82,13 @@ div .authArea{
 .details2{
     display:flex;
     flex:6;
+    flex-wrap:wrap;
     background-color: bisque;
     font-size: 0.8rem;
 }
 .details3{
-    flex:9;
-    
+    flex:1;
+    /* background-color: gainsboro; */
 }
 .displayItem{
     display:flex;
@@ -97,7 +98,7 @@ div .authArea{
     
     margin:2px;
     padding: 1px;
-    max-width: 90%; 
+    max-width: 95%; 
     align-content:flex-start;
 }
 .lft{

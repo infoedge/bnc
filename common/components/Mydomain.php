@@ -129,6 +129,11 @@ class Mydomain extends Component {
                     curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'GET');
                     curl_setopt($ch, CURLOPT_URL, "https://api.dev.name.com/v4/".$eDomain);
                     break;
+                case 'listDomains':
+                        $eDomain =  'domains';
+                        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'GET');
+                        curl_setopt($ch, CURLOPT_URL, "https://api.dev.name.com/v4/".$eDomain);
+                        break;
                 case 'setContacts':
                     //'{"contacts":{"registrant":{"firstName":"Jane","lastName":"Doe","address1":"123 Main St.","city":"Denver","state":"CO","country":"US","phone":"+1.3035551212","email":"admin@example.net"}
                     //$data=array("contacts"=>array(

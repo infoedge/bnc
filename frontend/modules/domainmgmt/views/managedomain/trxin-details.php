@@ -9,7 +9,8 @@ $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Domain Management'),
 $this->params['breadcrumbs'][]= ['label' => Yii::t('app', $this->title)];
 ?>
 <h1><?= Html::encode($this->title) ?></h1>
-<h3>Domain: <?= $domain ?></h3>
+<h3>Domain: <?= $model->domain ?></h3>
+<h4> Transfer Price: $<?= $model->transferPrice ?></h4>
 <div >
 <?php $form = ActiveForm::begin() ?>
     <div >
@@ -31,8 +32,11 @@ $this->params['breadcrumbs'][]= ['label' => Yii::t('app', $this->title)];
 </div>
         
     <div class="row align-items-center">
-    <div class="col">
-                Enter Authorization/EPP Code &nbsp;<input type="text" id="eppcode" name="eppcode" title="EPP Code">
+    <!-- <div class="col"> -->
+        <div class="col-sm-12 col-md-8">
+                Enter Authorization/EPP Code &nbsp;
+    <?= $form->field($model, 'eppcode')->textInput()->label(false) ?>
+    <!-- </div> -->
     </div>
     
         <div class="col">

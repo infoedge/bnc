@@ -6,6 +6,7 @@ use Yii;
 use common\models\Options;
 use yii\web\Response;
 use yii\helpers\ArrayHelper;
+use yii\data\ArrayDataProvider;
 
 class ManagedomainController extends \yii\web\Controller
 {
@@ -164,8 +165,17 @@ class ManagedomainController extends \yii\web\Controller
     public function actionTrxinDetails()
     {
         $domain = Yii::$app->session['domain'];
+        $model= new Options();
+        $model->scenario='trxin';
+        //set values
+        $model->domain = $domain;
+        $model->trxoptn = 7;
+        $model->transferPrice = $this->getPricing($domain);
+        if($model->load(Yii::$app->request->post())){
+            
+        }
         return $this->render('trxin-details',[
-            'domain'=>$domain,
+            'model'=> $model, 
         ]);
     }
 
@@ -214,6 +224,65 @@ class ManagedomainController extends \yii\web\Controller
         return $this->render('confirmed-registrations',[
             'regArray'=>Yii::$app->session['regArray'],
         ]);
+    }
+
+    public function actionListDomains()
+    {
+        $session=Yii::$app->session;
+        $domainsList = $this->getDomainsList();
+        if(!ArrayHelper::keyExists('domains',$domainsList)){
+            $session->setFlash('info','No domains found: '.$domainsList['message']);
+            return $this->redirect(['index']);
+        }else{
+            $provider=$this->createArrProvider($domainsList);
+        }
+        return $this->render('list-domains',[  
+            'provider'=>$provider,
+            
+        ]);
+    }
+
+    public function getPricing($thedomain,$pricetype='transferPrice')
+    {
+        $data=array();
+        $trxInResult = 0;
+        $curling8 = Yii::$app->mydomain;
+        $result8 = $curling8->doCurl($data ,'getPricing',$thedomain);
+        $curling8->resStr=json_decode($result8,true);
+        if(ArrayHelper::keyExists('transferPrice',$curling8->resStr)){
+            $trxInResult = $curling8->resStr[$pricetype];
+        }
+        
+        return $trxInResult;
+    }
+
+    public function createArrProvider($arrData)
+    {
+        return $myArrProvider= new ArrayDataProvider([
+            'allModels'=>$arrData['domains'],
+            'pagination'=>[
+                'pageSize'=>20,
+            ],
+        
+            'sort' => [
+                'attributes'=>['domainName','expireDate'],
+            ],
+
+        ]);
+    }
+    public Function getDomainsList()
+    {
+        $curling = Yii::$app->mydomain;
+        $data=array();
+        $result = $curling->doCurl($data ,'listDomains');
+        return $curling->resStr = json_decode($result,true);
+    }
+
+    public function confirmDomainInList($domainName)
+    {
+        $mylist = $this->getDomainsList();
+        $domainNameListArr = ArrayHelper::getColumn($mylist['domains'],'domainName');
+        return ArrayHelper::isIn($domainName,$domainNameListArr);
     }
 
 }
