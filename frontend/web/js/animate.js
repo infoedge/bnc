@@ -1,25 +1,25 @@
 $( document ).ready( function(){
     /* $("#submitBtn").prop("value", "");*/
     // $('#auth_code').hide();
-    $('input[type=radio][name="trxOptn"]').change(function() { 
-        var radioSel= $('input[name="trxOptn"]:checked').val();
+    $('input[type=radio][id="trxOptn"]').change(function() { 
+        var radioSel= $('input[id="trxOptn"]:checked').val();
         if(radioSel ==1) {
             $("#domain").prop('placeholder','Enter upto 50 comma seperated possible domains. e.g. xyz.com, abc.org');
             $("#submitBtn").prop("value", "Check Domain Avaiability");
-            $('#auth_code').hide();
+            // $('#auth_code').hide();
         } else if(radioSel ==2 ) {
             $("#domain").prop('placeholder','Enter comma seperated keywords for your domain e.g. space, cat, geranium');
             $("#submitBtn").prop("value", "Search for a Domain");
-            $('#auth_code').hide();
+            // $('#auth_code').hide();
         } else if(radioSel ==6) {
             $("#domain").prop('placeholder','Enter a valid domain. e.g. abcxyz.com');
             $("#submitBtn").prop("value", "Show Domain Details");
-            $('#auth_code').hide();
+            // $('#auth_code').hide();
             
         }  else if(radioSel ==7) {
             $("#domain").prop('placeholder','Enter a valid domain. e.g. abcxyz.com');
             $("#submitBtn").prop("value", "Transfer a Domain In");
-            $('#auth_code').show();
+            // $('#auth_code').show();
             
             
         }

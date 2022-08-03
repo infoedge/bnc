@@ -105,6 +105,7 @@ class ManagedomainController extends \yii\web\Controller
 
     public function actionSearch()
     {
+        $session=Yii::$app->session;
         $request=Yii::$app->request;
         $cnt=$trxtype=$chkRegister=$chkSearch=$regConfirmation=0;
         $domain = "";
@@ -115,7 +116,7 @@ class ManagedomainController extends \yii\web\Controller
         $adomain=array(array());
         $regArray = array();
         $chkSearch=true;
-        if($request->post('confirmRegDomain')){
+        if($request->post('confirmRegDomain')&& $request->post('dom')){
             $ids = array();
                 foreach($request->post("dom") as $val){
                     $ids[] = (int) $val;
@@ -125,6 +126,8 @@ class ManagedomainController extends \yii\web\Controller
                 //print_r($chkIds); 
                 $totPrice=0;
             return $this->redirect(['confirm-register','ids'=>$ids]);
+        }else{
+        $session->setFlash("warning","There must be at least one domain chosen. Click the checkbox in the required column to select!");
         }
         $curling = Yii::$app->mydomain;
         //$data = $_SESSION["domain"];
@@ -165,6 +168,9 @@ class ManagedomainController extends \yii\web\Controller
     public function actionTrxinDetails()
     {
         $domain = Yii::$app->session['domain'];
+        if($this->confirmDomainInList($domain)){
+            $this->redirect(['transfer-out']);
+        }
         $model= new Options();
         $model->scenario='trxin';
         //set values
@@ -240,6 +246,17 @@ class ManagedomainController extends \yii\web\Controller
             'provider'=>$provider,
             
         ]);
+    }
+
+    public function actionTransferOut()
+    {
+        $model=new Options();
+        $model->scenario='trxout';
+        $model->domain=Yii::$app->session['domain'];
+        return $this->render('transfer-out',[
+            'model'=>$model,
+        ]);
+        
     }
 
     public function getPricing($thedomain,$pricetype='transferPrice')

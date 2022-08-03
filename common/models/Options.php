@@ -15,6 +15,8 @@ class Options extends Model
     public $renewPrice;
     public $transferPrice;
 
+    public $confirmtrx;
+
     public function rules()
     {
         return [
@@ -22,7 +24,8 @@ class Options extends Model
             [['trxoptn', 'domain'], 'required'],
             [['eppcode'],'required','on'=>'trxin'],
             [['eppcode'],'string'],
-            [['trxoptn'],'integer'],
+            [['trxoptn','confirmtrx'],'integer'],
+            [['confirmtrx'], 'required', 'on'=>'trxout'],
             [['renewPrice','transferPrice'],'double'],
         ];
     }
@@ -35,6 +38,7 @@ class Options extends Model
             'eppcode' =>'Authorization/ EPP code',
             'renewPrice'=>'Renewal Price',
             'transferPrice'=>'Transfer Price',
+            'confirmtrx'=>'Confirm Transfer',
         ];
     }
 
@@ -42,6 +46,7 @@ class Options extends Model
         return[
             'default'=>['trxoptn', 'domain'],
             'trxin'=>['eppcode'],
+            'trxout'=>['confirmtrx'],
         ];
     }
 }

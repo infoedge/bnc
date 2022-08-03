@@ -26,9 +26,12 @@ $this->params['breadcrumbs'][]=Yii::t('app', $this->title);
                     'autorenewEnabled',
                     [
                         'attribute'=>'createDate',
-                        'format'=>['date','php:d-M-Y H:i:s']
+                        'format'=>['date','php:d-M-Y H:i'],
                     ],
-                    'expireDate',
+                    [
+                        'attribute'=>'expireDate',
+                        'format'=>['date','php:d-M-Y H:i'],
+                    ],
                     ['class' => 'yii\grid\ActionColumn',
                         'template'=> '{checkdetails}',// &nbsp;&nbsp;{salaryrecommendation}&nbsp;&nbsp;{salaryapproval}',
                         'header'=>'Action',
