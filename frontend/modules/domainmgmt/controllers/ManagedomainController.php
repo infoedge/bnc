@@ -3,10 +3,14 @@
 namespace app\modules\domainmgmt\controllers;
 
 use Yii;
-use common\models\Options;
+
 use yii\web\Response;
 use yii\helpers\ArrayHelper;
 use yii\data\ArrayDataProvider;
+use yii\data\ActiveDataProvider;
+
+use common\models\Dnsrecord;
+use common\models\Options;
 
 class ManagedomainController extends \yii\web\Controller
 {
@@ -94,6 +98,8 @@ class ManagedomainController extends \yii\web\Controller
                     return $this->redirect(['show-details']);
                 case 7:
                     return $this->redirect(['trxin-details']);
+                case 8:
+                    return $this->redirect(['list-records']);
             }
         }
         return $this->render('index',
@@ -259,6 +265,32 @@ class ManagedomainController extends \yii\web\Controller
         
     }
 
+    public function actionListRecords()
+    {
+        $session = Yii::$app->session;
+        $thedomain= $session['domain'];
+        $recsArr= $this->getListRecords($thedomain);
+        if(empty($recsArr) || !ArrayHelper::keyExists("records", $recsArr)){
+            $session->setFlash("warning","No DNS records found!");
+            return $this->redirect(['index']);
+        }else{
+            $provider= new ArrayDataProvider([
+                'allModels' => $recsArr['records'],
+                    'pagination' => [
+                        'pageSize' => 20,
+                    ],
+                    'sort' => [
+                        'attributes'=>['domainName'],
+                    ],   
+                ]);
+        }
+        return $this->render('list-records',[
+            'provider'=>$provider,
+            'recsArr'=> $recsArr,
+        ]);
+
+    }
+
     public function getPricing($thedomain,$pricetype='transferPrice')
     {
         $data=array();
@@ -300,6 +332,25 @@ class ManagedomainController extends \yii\web\Controller
         $mylist = $this->getDomainsList();
         $domainNameListArr = ArrayHelper::getColumn($mylist['domains'],'domainName');
         return ArrayHelper::isIn($domainName,$domainNameListArr);
+    }
+
+    public function getListRecords($thedomain)
+    {
+        $data= array();
+        $curling = Yii::$app->mydomain;
+        $result = $curling->doCurl($data ,'records',$thedomain);
+        $curling->resStr=json_decode($result,true);
+        // $models[] = new Dnsrecord();
+        // if(ArrayHelper::keyExists('records',$curling->resStr)){
+        //     foreach($curling->resStr['records'] as $key => $value){
+        //         $models[$key]->attributes = $value;
+        //         if($key< count($curling->resStr['records'])){
+        //             $models[$key] = new Dnsrecord();
+        //         }
+        //     }
+        // }
+        //return $models;
+        return $curling->resStr;
     }
 
 }

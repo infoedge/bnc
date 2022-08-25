@@ -5,31 +5,28 @@ use yii\widgets\ActiveForm;
 use yii\helpers\Url;
 use yii\grid\GridView;
 
-$this->title='List Domains';
-$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Domain Management'), 'url' => ['index']];
+$this->title='List Records';
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'DNS Management'), 'url' => ['index']];
 $this->params['breadcrumbs'][]=Yii::t('app', $this->title);
 ?>
 <h1><?= html::encode($this->title) ?></h1>
 
 <div>
-    <?php $form = ActiveForm::begin(['id' => 'list-domains-form', 'method'=>'post', 'action'=> Url::to(["list-domains"]) ]); ?>
+    <?php $form = ActiveForm::begin(['id' => 'list-records-form', 'method'=>'post', 'action'=> Url::to(["list-domains"]) ]); ?>
         <?=
             GridView::widget([
                 'dataProvider'=> $provider,
                 'columns'=>[
                     ['class'=>'yii\grid\SerialColumn'],
                     'domainName',
-                    'locked',
+                    'host',
                         
-                    'autorenewEnabled',
-                    [
-                        'attribute'=>'createDate',
-                        'format'=>['date','php:d-M-Y H:i'],
-                    ],
-                    [
-                        'attribute'=>'expireDate',
-                        'format'=>['date','php:d-M-Y H:i'],
-                    ],
+                    'fqdn',
+                    'type',
+                    'answer',
+                    'ttl',
+                    'priority',
+
                     ['class' => 'yii\grid\ActionColumn',
                         'template'=> '{checkdetails}',// &nbsp;&nbsp;{salaryrecommendation}&nbsp;&nbsp;{salaryapproval}',
                         'header'=>'Action',

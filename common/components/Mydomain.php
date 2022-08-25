@@ -163,11 +163,13 @@ class Mydomain extends Component {
                     curl_setopt($ch, CURLOPT_URL, "https://api.dev.name.com/v4/".$eDomain.$actionVerb );
                     curl_setopt($ch, CURLOPT_POST, 1);
                     break;
-                case 'listDomains':
+                case 'records':
                     $data= $dataArr;
-                    $eDomain =  'domains';
-                    curl_setopt($ch, CURLOPT_URL, "https://api.devname.com/v4/".$eDomain);
+                    $eDomain =  'domains/'.$theDomain.'/';
+                    curl_setopt($ch, CURLOPT_URL, "https://api.dev.name.com/v4/".$eDomain.$actionVerb);
                     curl_setopt($ch, CURLOPT_POST, 1);
+                    curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'GET');
+                    break;
             }
             
             

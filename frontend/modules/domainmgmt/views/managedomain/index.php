@@ -20,7 +20,7 @@ $this->params['breadcrumbs'][]= ['label' => Yii::t('app', $this->title)];
         <div class="row">
             <div class="col-xs-8">
         <div class="compactRadioGroup ">
-            <?= $form->field($myoptn, 'trxoptn')->radioList([1=>'Check Availability',2=>'Search',6=>'Show Details',7=>'Transfer Domain'],['id'=>'trxOptn'])->label('<h3>I want to: </h3>') ?>
+            <?= $form->field($myoptn, 'trxoptn')->radioList([1=>'Check Availability',2=>'Search',6=>'Show Details',7=>'Transfer Domain', 8=>'List DNS Records'],['id'=>'trxOptn'])->label('<h3>I want to: </h3>') ?>
             
         </div>
             </div>
