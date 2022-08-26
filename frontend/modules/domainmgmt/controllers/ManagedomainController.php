@@ -63,17 +63,19 @@ class ManagedomainController extends \yii\web\Controller
                 //     }
                 // }
                 // $curling = new mydomain();
-                //$domains = explode(",",$data,50);
+                // $domains = explode(",",$data,50);
                 $domains= $validity->checkErrors($data,'url');
                 $result= $curling->doCurl($domains,'checkAvailability');
                 $curling->resStr = json_decode($result, true);  
-                $cnt = count($curling->resStr['results']); 
-                if($cnt){
-                    $chkavailability=1;
-                    //convert $curling->resStr to model
-                    
-                    
-                }
+                if(array_key_exists('results', $curling->resStr)){
+                    $cnt = count($curling->resStr['results']); 
+                    //if($cnt){
+                        $chkavailability=1;
+                        //convert $curling->resStr to model
+                        
+                        
+                   // }
+            }
         return $this->render('chk-availability',[
                     'resStr'=>$curling->resStr['results'],
                     'appArr'=>$this->appArr,
@@ -132,8 +134,8 @@ class ManagedomainController extends \yii\web\Controller
                 //print_r($chkIds); 
                 $totPrice=0;
             return $this->redirect(['confirm-register','ids'=>$ids]);
-        }else{
-        $session->setFlash("warning","There must be at least one domain chosen. Click the checkbox in the required column to select!");
+        }elseif($request->isPost){
+            $session->setFlash("warning","There must be at least one domain chosen. Click the checkbox in the required column to select!");
         }
         $curling = Yii::$app->mydomain;
         //$data = $_SESSION["domain"];

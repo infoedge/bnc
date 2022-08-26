@@ -5,7 +5,10 @@ use yii\helpers\Url;
 use yii\helpers\Html;
 use \yii\widgets\ActiveForm;
 
+use frontend\assets\AppAsset;
+AppAsset::register($this);
 
+//\frontend\assets\AppAsset::register($this);
 
 /* @var $this yii\web\View */
 $this->title='Manage Domains';
@@ -42,4 +45,34 @@ $this->params['breadcrumbs'][]= ['label' => Yii::t('app', $this->title)];
 </div>
 <?php ActiveForm::end(); ?>
     </div>
+<?php   
+$script = <<< JS
+
+    $('input[type=radio][id="trxOptn"]').change(function(){
+        //var myoptn=$('input[id="trxOptn":checked]').val();
+        var myoptn = $("input[type='radio'][id='trxOptn']:checked").val();
+        alert('Option ' + myoptn + ' has been chosen' );
+        switch(myoptn) {
+            case 1:/* check-availability*/
+                $('#options-domain').prop('placeHolder',"Enter upto 50 comma seperated possible domains. e.g. xyz.com, abc.org");
+                $("#submitBtn").prop("value", "Check Domain Avaiability");
+            case 2:/* search */
+                $("#options-domain").prop('placeholder','Enter comma seperated keywords for your domain e.g. space, cat, geranium');
+                $("#submitBtn").prop("value", "Search for a Domain");
+            
+            case 6: /* show details */
+                $("#options-domain").prop('placeholder','Enter a valid domain. e.g. abcxyz.com');
+                $("#submitBtn").prop("value", "Show Domain Details");
+            
+            case 7: /* transfer domain */
+                $("#options-domain").prop('placeholder','Enter a valid domain. e.g. abcxyz.com');
+                $("#submitBtn").prop("value", "Transfer a Domain In");
+            default:
+                $("#submitBtn").prop("value", "Submit");
+        }
+    });
+
+JS;
+$this->registerJs($script, \yii\web\View::POS_READY);
+?>
 </div>
