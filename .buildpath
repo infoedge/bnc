@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<buildpath>
+	<buildpathentry kind="src" path="backend/assets"/>
+	<buildpathentry kind="src" path="backend/config"/>
+	<buildpathentry kind="src" path="backend/controllers"/>
+	<buildpathentry kind="src" path="backend/models"/>
+	<buildpathentry kind="src" path="backend/tests"/>
+	<buildpathentry kind="src" path="backend/views/domregtypesarr"/>
+	<buildpathentry kind="src" path="backend/views/layouts"/>
+	<buildpathentry kind="src" path="backend/views/site"/>
+	<buildpathentry kind="src" path="backend/web"/>
+	<buildpathentry kind="src" path="common/components"/>
+	<buildpathentry kind="src" path="common/config"/>
+	<buildpathentry kind="src" path="common/fixtures"/>
+	<buildpathentry kind="src" path="common/mail"/>
+	<buildpathentry kind="src" path="common/models"/>
+	<buildpathentry kind="src" path="common/tests"/>
+	<buildpathentry kind="src" path="common/widgets"/>
+	<buildpathentry kind="src" path="console/config"/>
+	<buildpathentry kind="src" path="console/migrations"/>
+	<buildpathentry kind="src" path="environments"/>
+	<buildpathentry kind="src" path="frontend/assets"/>
+	<buildpathentry kind="src" path="frontend/config"/>
+	<buildpathentry kind="src" path="frontend/controllers"/>
+	<buildpathentry kind="src" path="frontend/models"/>
+	<buildpathentry kind="src" path="frontend/modules/domainmgmt"/>
+	<buildpathentry kind="src" path="frontend/tests"/>
+	<buildpathentry kind="src" path="frontend/views/layouts"/>
+	<buildpathentry kind="src" path="frontend/views/site"/>
+	<buildpathentry kind="src" path="frontend/web"/>
+	<buildpathentry kind="src" path="vendor"/>
+	<buildpathentry kind="con" path="org.eclipse.php.core.LANGUAGE"/>
+</buildpath>
