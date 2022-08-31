@@ -7,7 +7,7 @@ use yii\base\Model;
 /**
  * Options- domain 
  */
-class Domainslist extends Model
+class Dnslist extends Model
 {
     public $domainName;
     public $locked;
@@ -19,7 +19,7 @@ class Domainslist extends Model
     {
         return[
             [['domainName'],'string'],
-            [['locked','autorenewEnabled'], 'integer'],
+            [['locked','autorenewEnabled'], 'boolean'],
             [['expireDate','createDate'],'date'],
         ];
     }

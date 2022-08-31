@@ -25,31 +25,31 @@ $( document ).ready( function(){
         }
 
     }); 
-    $('#submitBtn').click(function(){
-        var myAuthCode = $('#eppcode').val();
-        var radioSel= $('input[name="trxOptn"]:checked').val();
-        var mydomain=$('#domain').val();
-        if( radioSel==7 && !($mydomain) && !(myAuthCode) ){
-            alert("There must be a domain and a value for EPP Code");
-            $("#confirmDomain").prop('checked',true);
-            $("#submitBtn").prop("value", "Transfer a Domain In");
-            $('#domain').focus();
-        }else if (!mydomain && radioSel==6   ){
-            alert("There must be a valid domain indicated");
-            $("#submitBtn").prop("value", "Show Domain Details");
-            $("#showDomain").prop('checked',true);
-            $('#domain').focus();
-        }else if (!mydomain && radioSel==2   ){
-            alert("There must be some keywords indicated");
-            $("#search").prop('checked',true);
-            $("#submitBtn").prop("value", "Search for a Domain");
-            $('#domain').focus();
-        }else if (!mydomain && radioSel==1   ){
-            alert("There must be some valid domains indicated");
-            $("#submitBtn").prop("value", "Check Domain Avaiability");
-            $("#confirmDomain").prop('checked',true);
-            $('#domain').focus();
-        }
-
-    });   
+//    $('#submitBtn').click(function(){
+//        var myAuthCode = $('#eppcode').val();
+//        var radioSel= $('input[name="trxOptn"]:checked').val();
+//        var mydomain=$('#domain').val();
+//        if( radioSel==7 && !($mydomain) && !(myAuthCode) ){
+//            alert("There must be a domain and a value for EPP Code");
+//            $("#confirmDomain").prop('checked',true);
+//            $("#submitBtn").prop("value", "Transfer a Domain In");
+//            $('#domain').focus();
+//        }else if (!mydomain && radioSel==6   ){
+//            alert("There must be a valid domain indicated");
+//            $("#submitBtn").prop("value", "Show Domain Details");
+//            $("#showDomain").prop('checked',true);
+//            $('#domain').focus();
+//        }else if (!mydomain && radioSel==2   ){
+//            alert("There must be some keywords indicated");
+//            $("#search").prop('checked',true);
+//            $("#submitBtn").prop("value", "Search for a Domain");
+//            $('#domain').focus();
+//        }else if (!mydomain && radioSel==1   ){
+//            alert("There must be some valid domains indicated");
+//            $("#submitBtn").prop("value", "Check Domain Avaiability");
+//            $("#confirmDomain").prop('checked',true);
+//            $('#domain').focus();
+//        }
+//
+//    });   
 });

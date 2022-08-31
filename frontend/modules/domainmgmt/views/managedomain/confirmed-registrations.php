@@ -13,9 +13,9 @@ $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Domain Management'),
 $this->params['breadcrumbs'][]= ['label' => Yii::t('app', $this->title)];
 ?>
 <div class="container text-center">
-<h1><?= html::encode ($this->title)?></h1         
+<h1><?= html::encode($this->title)?> </h1>         
 </div>
->
+
 
 <div>
     <?php $form = ActiveForm::begin(['id'=>'confirm-registration']); ?>

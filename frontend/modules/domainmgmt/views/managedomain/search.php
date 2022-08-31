@@ -19,4 +19,13 @@ $this->params['breadcrumbs'][]=Yii::t('app', $this->title);
             'regcnt'=>$regcnt,
         ]) ?>
     <?php ActiveForm::end(); ?>
+<?php
+$script  = <<<JS
+    $(document).ready(function(){
+        alert('JS now working')
+    });
+JS;
+$this->registerJs($script);
+?>    
 </div>
+

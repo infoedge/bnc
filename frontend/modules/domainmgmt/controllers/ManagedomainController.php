@@ -11,6 +11,7 @@ use yii\data\ActiveDataProvider;
 
 use common\models\Dnsrecord;
 use common\models\Options;
+use common\models\Dnslist;
 
 class ManagedomainController extends \yii\web\Controller
 {
@@ -49,38 +50,26 @@ class ManagedomainController extends \yii\web\Controller
                 $session->setFlash("warning", "There must be at least one domain checked as required !!");
             }
         }
-        //$curling = new mydomain();
-        //        $data = $_POST["domain"];
-                //$domains = explode(",",$data,50);
-                
-                 $domains= $validity->checkErrors($data,'url');
-                // for($cnt=0;$cnt<count($domains);$i++){
-                //     $url = trim(htmlspecialchars($domains[$cnt]));
-                //     $url = filter_var($url, FILTER_VALIDATE_URL);
         
-                //     if ($url === false) {
-                //         $curling->myerr[$cnt]='Invalid URL';
-                //     }
-                // }
-                // $curling = new mydomain();
-                // $domains = explode(",",$data,50);
-                $domains= $validity->checkErrors($data,'url');
-                $result= $curling->doCurl($domains,'checkAvailability');
-                $curling->resStr = json_decode($result, true);  
-                if(array_key_exists('results', $curling->resStr)){
-                    $cnt = count($curling->resStr['results']); 
-                    //if($cnt){
-                        $chkavailability=1;
-                        //convert $curling->resStr to model
-                        
-                        
-                   // }
-            }
-        return $this->render('chk-availability',[
+                
+        $domains= $validity->checkErrors($data,'url');
+
+        $domains= $validity->checkErrors($data,'url');
+        $result= $curling->doCurl($domains,'checkAvailability');
+        $curling->resStr = json_decode($result, true);  
+        if(array_key_exists('results', $curling->resStr)){
+            $cnt = count($curling->resStr['results']); 
+            return $this->render('chk-availability',[
                     'resStr'=>$curling->resStr['results'],
                     'appArr'=>$this->appArr,
                     'regcnt'=>$cnt
                 ]);
+        }else{
+            $session->setFlash('warning','Please enter valid domain(s)');
+            $this->redirect(['index']);
+            
+        }
+        
     }
 
     public function actionIndex()
@@ -97,11 +86,13 @@ class ManagedomainController extends \yii\web\Controller
                 case 2:
                     return $this->redirect(['search']);
                 case 6:
-                    return $this->redirect(['show-details']);
+                    return $this->redirect(['show-details','domain'=>$myoptn->domain]);
                 case 7:
                     return $this->redirect(['trxin-details']);
                 case 8:
                     return $this->redirect(['list-records']);
+                case 9:
+                    return $this->redirect(['list-domains']);
             }
         }
         return $this->render('index',
@@ -151,11 +142,11 @@ class ManagedomainController extends \yii\web\Controller
         // }
     }
 
-    public function actionShowDetails()
+    public function actionShowDetails($domain)
     {
         $data = array();
         $curling = Yii::$app->mydomain;
-        $domain=Yii::$app->session['domain'];
+        //$domain=Yii::$app->session['domain'];
         $result = $curling->doCurl($data ,'getDomain',$domain);
         //echo("Get Domain \n");
         $curling->resStr = json_decode($result,true);
@@ -252,7 +243,7 @@ class ManagedomainController extends \yii\web\Controller
         }
         return $this->render('list-domains',[  
             'provider'=>$provider,
-            
+            'domainsList'=> $domainsList,
         ]);
     }
 
@@ -267,10 +258,36 @@ class ManagedomainController extends \yii\web\Controller
         
     }
 
-    public function actionListRecords()
+    public function actionListDnsRecords()
     {
         $session = Yii::$app->session;
         $thedomain= $session['domain'];
+        $recsArr= $this->getDomainsListModel($thedomain);
+        if(empty($recsArr) ){
+            $session->setFlash("warning","No DNS records found!");
+            return $this->redirect(['index']);
+        }else{
+            $provider= new ActiveDataProvider([
+                'allModels' => $recsArr,
+                    'pagination' => [
+                        'pageSize' => 20,
+                    ],
+                    'sort' => [
+                        'attributes'=>['domainName'],
+                    ],   
+                ]);
+        }
+        return $this->render('list-dns-models',[
+            'provider'=>$provider,
+            'recsArr'=> $recsArr,
+        ]);
+
+    }
+
+    public function actionListRecords($thedomain)
+    {
+        $session = Yii::$app->session;
+        //$thedomain= $session['domain'];
         $recsArr= $this->getListRecords($thedomain);
         if(empty($recsArr) || !ArrayHelper::keyExists("records", $recsArr)){
             $session->setFlash("warning","No DNS records found!");
@@ -292,7 +309,13 @@ class ManagedomainController extends \yii\web\Controller
         ]);
 
     }
-
+    
+    public function actionLstdetails($domain)
+    {
+        Yii::$app->session['domain']=$domain;
+        return $this->redirect(['listRecords']);
+    }
+    
     public function getPricing($thedomain,$pricetype='transferPrice')
     {
         $data=array();
@@ -326,9 +349,34 @@ class ManagedomainController extends \yii\web\Controller
         $curling = Yii::$app->mydomain;
         $data=array();
         $result = $curling->doCurl($data ,'listDomains');
-        return $curling->resStr = json_decode($result,true);
+        $curling->resStr = json_decode($result,true);
+        $outValue = $curling->resStr;
+        //ArrayHelper::setValue($outValue, 'domains', 'id' => ArrayHelper::getValue($outValue, 'domains'));
+        for($i=0;$i<count($outValue['domains']);$i++){
+            $outValue['domains'][$i]['id'] = $i;
+        }
+        return $outValue;
     }
-
+    
+     public Function getDomainsListModel()
+    {
+        $curling = Yii::$app->mydomain;
+        $data=array();
+        $result = $curling->doCurl($data ,'listDomains');
+        $models=array();
+        $curling->resStr = json_decode($result,true);
+        if(ArrayHelper::keyExists('domains', $curling->resStr,false)){
+                foreach($curling->resStr['domains'] as $i=>$list){
+                $models[$i]=new Dnslist();
+                $models[$i]->domainName = ArrayHelper::getValue($list,'domainName');
+                $models[$i]->locked = ArrayHelper::getValue($list,'locked');
+                $models[$i]->autorenewEnabled = ArrayHelper::getValue($list,'autorenewEnabled');           
+                $models[$i]->expireDate = ArrayHelper::getValue($list,'expireDate');
+                $models[$i]->createDate =ArrayHelper::getValue($list,'createDate');
+            }   
+        }
+        return $models;
+    }
     public function confirmDomainInList($domainName)
     {
         $mylist = $this->getDomainsList();
@@ -342,16 +390,7 @@ class ManagedomainController extends \yii\web\Controller
         $curling = Yii::$app->mydomain;
         $result = $curling->doCurl($data ,'records',$thedomain);
         $curling->resStr=json_decode($result,true);
-        // $models[] = new Dnsrecord();
-        // if(ArrayHelper::keyExists('records',$curling->resStr)){
-        //     foreach($curling->resStr['records'] as $key => $value){
-        //         $models[$key]->attributes = $value;
-        //         if($key< count($curling->resStr['records'])){
-        //             $models[$key] = new Dnsrecord();
-        //         }
-        //     }
-        // }
-        //return $models;
+        
         return $curling->resStr;
     }
 
